@@ -27,6 +27,8 @@ local plugin_specs = {
   { "hrsh7th/cmp-buffer", lazy = true },
   { "hrsh7th/cmp-omni", lazy = true },
   { "quangnguyen30192/cmp-nvim-ultisnips", lazy = true },
+  { "williamboman/mason.nvim", lazy = true },
+  { "williamboman/mason-lspconfig.nvim", lazy = true },
   {
     "hrsh7th/nvim-cmp",
     name = "nvim-cmp",
@@ -361,9 +363,6 @@ local plugin_specs = {
   -- Markdown previewing (only for Mac and Windows)
   {
     "iamcco/markdown-preview.nvim",
-    enabled = function()
-      return vim.g.is_win or vim.g.is_mac
-    end,
     build = "cd app && npm install && git restore .",
     ft = { "markdown" },
   },

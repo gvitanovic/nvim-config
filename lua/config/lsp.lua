@@ -5,6 +5,44 @@ local lspconfig = require("lspconfig")
 
 local utils = require("utils")
 
+local mason = require("mason")
+local mason_lspconfig = require("mason-lspconfig")
+local lspconfig = require("lspconfig")
+
+mason.setup()
+
+local lsp_config = {
+  ensure_installed = { "bashls", "clangd", "cmake", "cssls", "tailwindcss", "dockerls", "ts_ls" },
+  handlers = {
+    function(server_name)
+      if server_name == "ts_ls" then
+        lspconfig.ts_ls.setup {
+          settings = {
+            parser_install_directories = {
+              -- If using nvim-treesitter with lazy.nvim
+              vim.fs.joinpath(
+                vim.fn.stdpath('data'),
+                '/lazy/nvim-treesitter/parser/'
+              ),
+            },
+            -- This setting is provided by default
+            parser_aliases = {
+              ecma = 'javascript',
+              jsx = 'javascript',
+            },
+            -- E.g. zed support
+            language_retrieval_patterns = {
+              'languages/src/([^/]+)/[^/]+\\.scm$',
+            },
+          },
+        }
+      end
+    end,
+  }
+}
+
+mason_lspconfig.setup(lsp_config)
+
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("buf_behavior_conf", { clear = true }),
   callback = function(event_context)
